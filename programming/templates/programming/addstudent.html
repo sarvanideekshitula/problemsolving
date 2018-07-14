@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>AddStudent</title>
+  </head>
+  <body>
+    <form method="post">
+      {% csrf_token%}
+      Name:<input type="text" name="name"><br>
+      CodeChef Handle: <input type="text" name="codechef"><br>
+      CodeForces Handle: <input type="text" name="codeforces"><br>
+      Year: <input type="number" name="year"><br>
+      <button type="submit" name="button">Add Student</button>
+    </form>
+  </body>
+</html>

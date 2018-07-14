@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>View Summary</title>
+  </head>
+  <body>
+    {% for i in object_list%}
+    Name: {{i.name}}
+    CodeChef: {{i.codechef}}
+    CodeForces: {{i.codechef}}
+    Year: {{i.year}}
+    Groups:
+    {% for j in i.groupid.all%}
+      {{j}}
+    {% endfor %}  <br>
+    {% endfor%}
+  </body>
+</html>
