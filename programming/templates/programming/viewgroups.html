@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>View Groups</title>
+  </head>
+  <body>
+    <form method="post">
+      {% csrf_token %}
+      {% for i in groupname %}
+        <li><input type="checkbox" name="delete[]" value="{{i}}"/><label>
+          <a href="{% url 'detailgroup' i %}">{{i}}</a></label></li>
+      {% endfor %}
+      <button type="submit" name="button">Delete Group</button>
+    </form>
+  </body>
+</html>

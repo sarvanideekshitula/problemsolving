@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Create Group</title>
+  </head>
+  <body>
+    <form method="post">
+      {%csrf_token%}
+      Group Name: <input type="text" name="name">
+      {% for i in name%}
+        <li><input type="checkbox" name="students[]" value="{{i}}"/><label>{{i}}</label></li>
+      {% endfor %}
+      <button type="submit" name="button">Submit</button>
+    </form>
+  </body>
+</html>

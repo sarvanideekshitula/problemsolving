@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Delete Students</title>
+  </head>
+  <body>
+    <form method="post">
+      {% csrf_token %}
+      {% for i in stuname %}
+        <li><input type="checkbox" name="deletestu[]" value="{{i}}"/><label>{{i}}</label></li>
+      {% endfor %}
+      <button type="submit" name="button">Delete Group</button>
+    </form>
+  </body>
+</html>
