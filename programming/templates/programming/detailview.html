@@ -5,8 +5,10 @@
     <title>Detail Group</title>
   </head>
   <body>
-    {% for i in grpstu %}
+    {% for i in object_list %}
+      {% if i.groupid.groupname == get_object %}
       {{i.name}}
+      {% endif %}
     {% endfor %}
   </body>
 </html>

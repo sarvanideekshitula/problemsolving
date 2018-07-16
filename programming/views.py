@@ -19,6 +19,8 @@ def addStudent(request):
         groupname = Groups.objects.get(groupname = "Bios").id
         u.groupid.add(groupname)
         u.save()
+        stu = Student_details.objects.all()
+        print stu
         return HttpResponseRedirect('/programming/addStudent')
     return render(request, 'programming/addstudent.html',{})
 
@@ -30,7 +32,7 @@ def addgroup(request):
     if request.method == 'POST':
         groupname = request.POST.get('name')
         students = request.POST.getlist('students[]')
-        u = Groups(groupname = groupname, students=students)
+        u = Groups(groupname = groupname)
         u.save()
         for i in students:
             stu = Student_details.objects.get(name = i)
@@ -54,10 +56,9 @@ def deleteStudents(request):
             stu.delete()
     return render(request, 'programming/deletestudents.html',{'stuname':Student_details.objects.values_list('name', flat=True)})
 
-def detailGroup(request, slug):
-    stu = Groups.objects.get(groupname=slug)
-    detail= []
-    print stu
-    #for i in stu:
+class detailGroup(ListView):
+    model = Student_details
+    template_name = 'programming/detailview.html'
 
-    return render(request, 'programming/detailview.html',{'grpstu':detail})
+    def get_object(self, queryset=None):
+        return queryset.get(slug=self.slug)

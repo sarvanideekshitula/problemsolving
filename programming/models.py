@@ -2,11 +2,14 @@
 from __future__ import unicode_literals
 
 from django.db import models
-# Create your models here.
 
+# Create your models here.
 class Groups(models.Model):
     groupid = models.IntegerField(default=0)
     groupname = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.groupname
 
 class Student_details(models.Model):
     name = models.CharField(max_length=50)

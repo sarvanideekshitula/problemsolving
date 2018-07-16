@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 from programming import views
-from programming.views import viewsummary
+from programming.views import viewsummary, detailGroup
 
 urlpatterns = [
     url(r'^$', views.addStudent, name='addstudent'),
@@ -8,5 +8,5 @@ urlpatterns = [
     url(r'^creategroup/$', views.addgroup, name='addgroup'),
     url(r'^viewgroups/$', views.viewgroups, name='viewgroups'),
     url(r'^deletestudents/$', views.deleteStudents, name='deleteStudents'),
-    url(r'^(?P<slug>[\w-]+)/$', views.detailGroup, name='detailgroup'),
+    url(r'^(?P<slug>[\w-]+)/$', detailGroup.as_view(), name='detailgroup'),
 ]

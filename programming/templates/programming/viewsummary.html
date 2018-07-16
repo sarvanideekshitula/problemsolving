@@ -12,7 +12,7 @@
     Year: {{i.year}}
     Groups:
     {% for j in i.groupid.all%}
-      {{j}}
+      {{j.groupname}}
     {% endfor %}  <br>
     {% endfor%}
   </body>
