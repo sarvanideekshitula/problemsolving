@@ -6,7 +6,7 @@
   </head>
   <body>
     {% for i in object_list%}
-    Name: {{i.name}}
+    Name: <a href="{% url 'studentsDetail' i.id %}">{{i.name}}</a>
     CodeChef: {{i.codechef}}
     CodeForces: {{i.codechef}}
     Year: {{i.year}}
@@ -14,6 +14,11 @@
     {% for j in i.groupid.all%}
       {{j.groupname}}
     {% endfor %}  <br>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="handle" value="{{i.codechef}}">
+      <button type="submit" name="button">Update</button>
+    </form>
     {% endfor%}
   </body>
 </html>

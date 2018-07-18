@@ -6,9 +6,42 @@
   </head>
   <body>
     {% for i in object_list %}
-      {% if i.groupid.groupname == get_object %}
-      {{i.name}}
-      {% endif %}
+      {% for j in i.groupid.all %}
+        {% if j.groupname == slug %}
+          {{i.name}}
+        {% endif %}
+      {% endfor %}
     {% endfor %}
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="grp" value="{{slug}}">
+      <button type="submit" name="button">Delete</button>
+      <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="bt">Add Students<span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            {% for i in object_list %}
+              {% for j in i.groupid.all %}
+                {% if j.groupname != slug %}
+                  <li><input type="checkbox" name="add[]" value="{{i.name}}"/><label>{{i.name}}</label></li>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </ul>
+          <button type="submit" name="button">Add Student</button>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="bt">Delete Students<span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              {% for i in object_list %}
+                {% for j in i.groupid.all %}
+                  {% if j.groupname == slug %}
+                    <li><input type="checkbox" name="delstu[]" value="{{i.name}}"/><label>{{i.name}}</label></li>
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+            </ul>
+            <button type="submit" name="button">Delete Student</button>
+          </div>
+    </form>
   </body>
 </html>

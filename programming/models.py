@@ -14,6 +14,7 @@ class Groups(models.Model):
 class Student_details(models.Model):
     name = models.CharField(max_length=50)
     codechef = models.CharField(max_length=50)
+    codechefdetails = models.TextField(blank=True)
     codeforces = models.CharField(max_length=50)
     year = models.IntegerField(default=0)
     groupid = models.ManyToManyField(Groups, blank=True)
