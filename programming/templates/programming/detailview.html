@@ -6,9 +6,11 @@
   </head>
   <body>
     {% for i in object_list %}
-      {% if i.groupid.groupname == get_object %}
-      {{i.name}}
-      {% endif %}
+      {% for j in i.groupid.all %}
+        {% if j.groupname == slug %}
+          {{i.name}}
+          {% endif %}
+          {% endfor %}
     {% endfor %}
   </body>
 </html>

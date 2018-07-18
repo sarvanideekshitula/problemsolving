@@ -1,17 +1,76 @@
+{% extends 'programming/base.html' %}
+{% block body %}
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>AddStudent</title>
-  </head>
-  <body>
-    <form method="post">
-      {% csrf_token%}
-      Name:<input type="text" name="name"><br>
-      CodeChef Handle: <input type="text" name="codechef"><br>
-      CodeForces Handle: <input type="text" name="codeforces"><br>
-      Year: <input type="number" name="year"><br>
-      <button type="submit" name="button">Add Student</button>
-    </form>
-  </body>
-</html>
+    <div id="wrapper">
+
+        <div id="page-wrapper" >
+            <div id="page-inner">
+
+			 <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            Add Student
+                        </h1>
+                    </div>
+                </div>
+                 <!-- /. ROW  -->
+              <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                  <form method="post">
+                                    {% csrf_token%}
+                                        <div class="form-group">
+                                            <label>Student Name</label>
+                                            <input class="form-control" name="name" placeholder="Name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Codechef Handle</label>
+                                            <input class="form-control" name="codechef" placeholder="Codechef">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Codeforces Handle</label>
+                                            <input class="form-control" name="codeforces" placeholder="Codeforces">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Batch(Year)</label>
+                                            <input class="form-control" name="year" placeholder="Year">
+                                        </div>
+
+
+                                        <button type="submit" class="btn btn-default">Submit Button</button>
+                                        <h4>-----OR------</h4>
+                                        <div class="form-group">
+                                            <label>File input</label>
+                                            <input type="file">
+                                        </div>
+                                        <button type="submit" class="btn btn-default">Submit Button</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+			<footer><p>All right reserved. Template by: <a href="http://webthemez.com">WebThemez</a></p></footer>
+			</div>
+             <!-- /. PAGE INNER  -->
+            </div>
+    <script src="/static/programming/js/jquery-1.10.2.js"></script>
+      <!-- Bootstrap Js -->
+    <script src="/static/programming/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Js -->
+    <script src="/static/programming/js/jquery.metisMenu.js"></script>
+      <!-- Custom Js -->
+    <script src="/static/programming/js/custom-scripts.js"></script>
+{% endblock %}
