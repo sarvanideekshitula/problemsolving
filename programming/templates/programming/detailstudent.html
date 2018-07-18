@@ -8,9 +8,11 @@
     {{ user_info.name }}
     {{ user_info.codechef }}
     {{ user_info.codeforces }}
-    {% for i in user%}
-    {{i}}
+    {% for i in rank%}
+      {% for j in i%}
+        {{j}}<br>
+      {% endfor %}  <br>
     {% endfor %}
-    
+
   </body>
 </html>

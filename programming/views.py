@@ -46,6 +46,10 @@ def update(handle):
         endindex = endindex + 1
     return script.text[startindex:endindex]
 
+def home(request):
+    temp = 'programming/home.html'
+    return render(request,temp,{})
+
 def addStudent(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -54,7 +58,7 @@ def addStudent(request):
         year = request.POST.get('year')
         u =  Student_details(name = name, codechef = codechef, codeforces = codeforces, year = year)
         u.save()
-        return HttpResponseRedirect('/programming/addStudent')
+        return HttpResponseRedirect('/programming/addstudent')
     return render(request, 'programming/addstudent.html',{})
 
 class viewsummary(ListView):
@@ -70,16 +74,27 @@ class viewsummary(ListView):
         return HttpResponseRedirect('/programming/viewsummary')
 
 def addgroup(request):
-    if request.method == 'POST':
+     if request.method == 'POST':
         groupname = request.POST.get('name')
         students = request.POST.getlist('students[]')
-        u = Groups(groupname = groupname)
-        u.save()
-        for i in students:
-            stu = Student_details.objects.get(name = i)
-            stu.groupid.add(u.id)
-        return HttpResponseRedirect('/programming/addStudent')
-    return render(request, 'programming/creategroup.html',{'name':Student_details.objects.values_list('name',flat=True)})
+        groupnames = Groups.objects.values_list('groupname', flat=True)
+        for i in groupnames:
+            if i == groupname:
+                flag=0
+                break
+            else:
+                flag=1
+        if flag == 1:
+            u = Groups(groupname = groupname)
+            u.save()
+            for i in students:
+                stu = Student_details.objects.get(name = i)
+                stu.groupid.add(u.id)
+            return HttpResponseRedirect('/programming/addstudent')
+        else:
+            template = "programming/creategroup.html"
+            render(request, template)
+     return render(request, 'programming/creategroup.html',{'name':Student_details.objects.values_list('name', flat=True)})
 
 def viewgroups(request):
     if request.method == 'POST':
@@ -131,16 +146,7 @@ class studentsDetail(DetailView):
         context['user_info'] = Student_details.objects.get(id = pk)
         data = json.loads(context['user_info'].codechefdetails)
         rank = []
-        contest = []
-        rating = []
-        name = []
         for key in data:
-            rank.append(key['rank'])
-            contest.append(key['contest'])
-            rating.append(key['rating'])
-            name.append(key['name'])
+            rank.append([key['rank'], key['rating'], key['name']])
         context['rank'] = rank
-        context['contest'] = contest
-        context['rating'] = rating
-        context['name'] = name
         return context
