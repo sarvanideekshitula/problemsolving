@@ -1,67 +1,61 @@
 {% extends 'programming/base.html' %}
 {% block body %}
 
-    <div id="wrapper">
-        <!-- /. NAV SIDE  -->
-        <div id="page-wrapper" >
-            <div id="page-inner">
+<div id="wrapper">
+  <!-- /. NAV SIDE  -->
+  <div id="page-wrapper" >
+      <div id="page-inner">
 
-                 <!-- /. ROW  -->
+           <!-- /. ROW  -->
 
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Advanced Tables -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                             Summary
+      <div class="row">
+          <div class="col-md-12">
+              <!-- Advanced Tables -->
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                       Summary
+                  </div>
+                  <div class="panel-body">
+                      <div class="table-responsive">
+                          <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                              <thead>
+                                  <tr>
+                                      <th>Student name</th>
+                                      <th>CodeChef</th>
+                                      <th>Codeforces</th>
+                                      <th>Year</th>
+                                      <th>Update</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                {% for i in object_list%}
+
+                                  <tr class="odd gradeA">
+                                      <td><a href="{% url 'studentsDetail' i.id %}">{{i.name}}</a></td>
+                                      <td>{{i.codechef}}</td>
+                                      <td>{{i.codeforces}}</td>
+                                      <td>{{i.year}}</td>
+                                   <td>
+                                     <form method="post">
+                                       {% csrf_token %}
+                                       <input type="hidden" name="handle" value="{{i.codechef}}">
+                                       <button type="submit" name="button">Update</button>
+                                     </form>
+                                   </td>
+                                  </tr>
+                                  {% endfor %}
+                          </table>
                         </div>
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                    <thead>
-                                        <tr>
-                                            <th>Student name</th>
-                                            <th>CodeChef</th>
-                                            <th>Codeforces</th>
-                                            <th>Year</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                      {% for i in object_list%}
-                                        <tr class="odd gradeX">
-                                          <td><a href="{% url 'studentsDetail' i.id %}">{{i.name}}</a></td>
-                                          <td>{{i.codechef}}</td>
-                                          <td>{{i.codeforces}}</td>
-                                          <td>{{i.year}}</td>
-                                          <td>
-                                            <form method="post">
-                                              {% csrf_token %}
-                                              <input type="hidden" name="handle" value="{{i.codechef}}">
-                                              <button type="submit" name="button">Update</button>
-                                            </form>
-                                          </td>
-                                        </tr>
-                                        {% endfor %}
-
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </div>
+                      </div>
                     </div>
-                    <!--End Advanced Tables -->
-                </div>
-            </div>
+          </div>
+      </div>
+          <!-- /. ROW  -->
+  </div>
 
-        </div>
-
-    </div>
-             <!-- /. PAGE INNER  -->
-            </div>
-         <!-- /. PAGE WRAPPER  -->
-     <!-- /. WRAPPER  -->
-    <!-- JS Scripts-->
-    <!-- jQuery Js -->
+</div>
+       <!-- /. PAGE INNER  -->
+      </div>
     <script src="/static/programming/js/jquery-1.10.2.js"></script>
       <!-- Bootstrap Js -->
     <script src="/static/programming/js/bootstrap.min.js"></script>
