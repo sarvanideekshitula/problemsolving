@@ -4,12 +4,14 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from programming.models import Student_details, Groups
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, DeleteView, CreateView
+from programming.forms import StudentForm, GroupForm
 import re
 import os
 import json
 import requests
 from bs4 import BeautifulSoup
+from django.urls import reverse_lazy
 # Create your views here.
 
 def isbracket(c):
@@ -46,55 +48,55 @@ def update(handle):
         endindex = endindex + 1
     return script.text[startindex:endindex]
 
+def getUserRating(handlename):
+	res = requests.get('http://codeforces.com/api/user.rating?handle='+handlename)
+	return res.text
+
 def home(request):
     temp = 'programming/home.html'
     return render(request,temp,{})
 
-def addStudent(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        codechef = request.POST.get('codechef')
-        codeforces = request.POST.get('codeforces')
-        year = request.POST.get('year')
-        u =  Student_details(name = name, codechef = codechef, codeforces = codeforces, year = year)
-        u.save()
-        return HttpResponseRedirect('/programming/addstudent')
-    return render(request, 'programming/addstudent.html',{})
+class StudentView(CreateView):
+    form_class = StudentForm
+    template_name = 'programming/addstudent.html'
+    success_url = reverse_lazy('home')
 
 class viewsummary(ListView):
     model = Student_details
     template_name = 'programming/viewsummary.html'
 
     def post(self, request, *args, **kwargs):
-        handle = request.POST.get('handle')
-        text = update(handle)
-        u = Student_details.objects.get(codechef = handle)
-        u.codechefdetails = text
+        codechef = request.POST.get('codechef')
+        codeforces = request.POST.get('codeforces')
+        codecheftext = update(codechef)
+        codeforcestext = getUserRating(codeforces)
+        u = Student_details.objects.get(codechef = codechef)
+        u.codechefdetails = codecheftext
+        u.codeforcesdetails = codeforcestext
         u.save()
         return HttpResponseRedirect('/programming/viewsummary')
 
-def addgroup(request):
-     if request.method == 'POST':
-        groupname = request.POST.get('name')
+class addGroup(CreateView):
+    form_class = GroupForm
+    template_name = 'programming/creategroup.html'
+    success_url = reverse_lazy('home')
+
+
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(addGroup, self).get_context_data(*args, **kwargs)
+        ctx['name'] = Student_details.objects.values_list('name', flat=True)
+        return ctx
+
+
+    def post(self, request, *args, **kwargs):
         students = request.POST.getlist('students[]')
-        groupnames = Groups.objects.values_list('groupname', flat=True)
-        for i in groupnames:
-            if i == groupname:
-                flag=0
-                break
-            else:
-                flag=1
-        if flag == 1:
-            u = Groups(groupname = groupname)
-            u.save()
-            for i in students:
-                stu = Student_details.objects.get(name = i)
-                stu.groupid.add(u.id)
-            return HttpResponseRedirect('/programming/addstudent')
-        else:
-            template = "programming/creategroup.html"
-            render(request, template)
-     return render(request, 'programming/creategroup.html',{'name':Student_details.objects.values_list('name', flat=True)})
+        groupname = request.POST.get('groupname')
+        #print self.object
+        for i in students:
+            stu = Student_details.objects.get(name = i)
+            stu.groupid.add(Groups.objects.get(groupname = groupname).id)
+
 
 def viewgroups(request):
     if request.method == 'POST':
@@ -103,6 +105,7 @@ def viewgroups(request):
             stu = Groups.objects.get(groupname = i)
             stu.delete()
     return render(request, 'programming/viewgroups.html',{'groupname':Groups.objects.values_list('groupname', flat=True)})
+
 
 def deleteStudents(request):
     if request.method == 'POST':
@@ -124,7 +127,7 @@ class detailGroup(ListView):
     def post(self, request, *args, **kwargs):
           delstu = request.POST.getlist('delstu[]')
           addstu = request.POST.getlist('add[]')
-          grp = request.POST.get('grp')
+          grp = request.POST.get('groupname')
           g = Groups.objects.get(groupname = grp)
           if len(delstu) == 0:
               for i in addstu:
@@ -144,9 +147,11 @@ class studentsDetail(DetailView):
         context = super(studentsDetail, self).get_context_data(**kwargs)
         pk = self.kwargs['pk']
         context['user_info'] = Student_details.objects.get(id = pk)
-        data = json.loads(context['user_info'].codechefdetails)
-        rank = []
-        for key in data:
-            rank.append([key['rank'], key['rating'], key['name']])
-        context['rank'] = rank
+        codechefdata = json.loads(context['user_info'].codechefdetails)
+        codeforcesdata = json.loads(context['user_info'].codeforcesdetails)
+        context['user_info'].codechefrating = codechefdata[len(codechefdata)-1]['rating']
+        context['user_info'].codeforcesrating = codeforcesdata['result'][len(codeforcesdata['result'])-1]['newRating']
+        context['user_info'].save()
+        context['ranks'] = codechefdata
+        context['codeforcesrank'] = codeforcesdata['result']
         return context

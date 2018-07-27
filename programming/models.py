@@ -5,7 +5,6 @@ from django.db import models
 
 # Create your models here.
 class Groups(models.Model):
-    groupid = models.IntegerField(default=0)
     groupname = models.CharField(max_length=50)
 
     def __str__(self):
@@ -15,7 +14,10 @@ class Student_details(models.Model):
     name = models.CharField(max_length=50)
     codechef = models.CharField(max_length=50)
     codechefdetails = models.TextField(blank=True)
+    codechefrating = models.IntegerField(default=0)
     codeforces = models.CharField(max_length=50)
+    codeforcesdetails = models.TextField(blank=True)
+    codeforcesrating = models.IntegerField(default=0)
     year = models.IntegerField(default=0)
     groupid = models.ManyToManyField(Groups, blank=True)
 

@@ -38,7 +38,8 @@
                                    <td>
                                      <form method="post">
                                        {% csrf_token %}
-                                       <input type="hidden" name="handle" value="{{i.codechef}}">
+                                       <input type="hidden" name="codechef" value="{{i.codechef}}">
+                                       <input type="hidden" name="codeforces" value="{{i.codeforces}}">
                                        <button type="submit" name="button">Update</button>
                                      </form>
                                    </td>
