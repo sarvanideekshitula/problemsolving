@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 from programming import views
-from programming.views import viewsummary, detailGroup, studentsDetail, StudentView, addGroup
+from programming.views import viewsummary, detailGroup, studentsDetail, StudentView, addGroup, dailyChallenges, searchDailyChallenges
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
@@ -12,4 +12,6 @@ urlpatterns = [
     url(r'^deletestudents/$', views.deleteStudents, name='deleteStudents'),
     url(r'^detailgroup/(?P<slug>[\w-]+)/$', detailGroup.as_view(), name='detailgroup'),
     url(r'^profile/(?P<pk>\d+)/$', studentsDetail.as_view(), name='studentsDetail'),
+    url(r'^dailychallenges/$', dailyChallenges.as_view(), name='dailyChallenges'),
+    url(r'^searchdailychallenges/$', searchDailyChallenges.as_view(), name='searchDailyChallenges'),
 ]

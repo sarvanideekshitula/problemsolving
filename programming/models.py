@@ -10,6 +10,12 @@ class Groups(models.Model):
     def __str__(self):
         return self.groupname
 
+class DailyChallenges(models.Model):
+    probname = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.probname
+
 class Student_details(models.Model):
     name = models.CharField(max_length=50)
     codechef = models.CharField(max_length=50)
@@ -20,6 +26,7 @@ class Student_details(models.Model):
     codeforcesrating = models.IntegerField(default=0)
     year = models.IntegerField(default=0)
     groupid = models.ManyToManyField(Groups, blank=True)
+
 
     def __str__(self):
         return self.name

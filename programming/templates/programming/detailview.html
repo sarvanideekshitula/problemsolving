@@ -10,30 +10,92 @@
               Summary
             </div>
             <div class="panel-body">
+              <div id="normal">
               <div class="table-responsive">
                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                   <thead>
                     <tr>
                       <th>Student name</th>
                       <th>CodeChef</th>
+                      <th>CodeChef Rating</th>
                       <th>Codeforces</th>
+                      <th>CodeForces Rating</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {% for i in object_list%}
-                      {% for j in i.groupid.all %}
-                        {% if j.groupname == slug %}
-                          <tr class="odd gradeA">
-                            <td><a href="{% url 'studentsDetail' i.id %}">{{i.name}}</a></td>
-                            <td>{{i.codechef}}</td>
-                            <td>{{i.codechefrating}}</td>
-                            <td>{{i.codeforces}}</td>
-                            <td>{{i.codeforcesrating}}</td>
-                          </tr>
-                        {% endif %}
+                    <tbody>
+                      {% for i in object_list%}
+                        {% for j in i.groupid.all %}
+                          {% if j.groupname == slug %}
+                            <tr class="odd gradeA">
+                              <td><a href="{% url 'studentsDetail' i.id %}">{{i.name}}</a></td>
+                              <td>{{i.codechef}}</td>
+                              <td>{{i.codechefrating}}</td>
+                              <td>{{i.codeforces}}</td>
+                              <td>{{i.codeforcesrating}}</td>
+                            </tr>
+                          {% endif %}
+                        {% endfor %}
                       {% endfor %}
-                    {% endfor %}
-                  </table>
+                    </table>
+                </div>
+                </div>
+                <div id="codechef" style="display:none;">
+                  <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                      <thead>
+                        <tr>
+                          <th>Student name</th>
+                          <th>CodeChef</th>
+                          <th>CodeChef Rating</th>
+                          <th>Codeforces</th>
+                          <th>CodeForces Rating</th>
+                        </tr>
+                      </thead>
+                        <tbody>
+                          {% for i in codechef%}
+                            {% for j in i.groupid.all %}
+                              {% if j.groupname == slug %}
+                                <tr class="odd gradeA">
+                                  <td><a href="{% url 'studentsDetail' i.id %}">{{i.name}}</a></td>
+                                  <td>{{i.codechef}}</td>
+                                  <td>{{i.codechefrating}}</td>
+                                  <td>{{i.codeforces}}</td>
+                                  <td>{{i.codeforcesrating}}</td>
+                                </tr>
+                              {% endif %}
+                            {% endfor %}
+                          {% endfor %}
+                        </table>
+                    </div>
+                </div>
+                <div id="codeforces" style="display:none;">
+                  <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                      <thead>
+                        <tr>
+                          <th>Student name</th>
+                          <th>CodeChef</th>
+                          <th>CodeChef Rating</th>
+                          <th>Codeforces</th>
+                          <th>CodeForces Rating</th>
+                        </tr>
+                      </thead>
+                        <tbody>
+                          {% for i in codeforces%}
+                            {% for j in i.groupid.all %}
+                              {% if j.groupname == slug %}
+                                <tr class="odd gradeA">
+                                  <td><a href="{% url 'studentsDetail' i.id %}">{{i.name}}</a></td>
+                                  <td>{{i.codechef}}</td>
+                                  <td>{{i.codechefrating}}</td>
+                                  <td>{{i.codeforces}}</td>
+                                  <td>{{i.codeforcesrating}}</td>
+                                </tr>
+                              {% endif %}
+                            {% endfor %}
+                          {% endfor %}
+                        </table>
+                    </div>
                 </div>
                 <br/>
                 <form method="post">
@@ -79,6 +141,8 @@
                     </div>
                   </div>
                   </form>
+                    <button type="button" id="chef">CodeChef</button>
+                    <button type="button" id="forces">CodeForces</button>
                             </div>
                           </div>
                 </div>
@@ -97,6 +161,19 @@
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();
             });
+    </script>
+
+    <script type="text/javascript">
+    $('#chef').on('click',function(){
+      if($('#normal').css('display')!='none'){
+        $('#codechef').show().siblings('div').hide();
+      }
+    });
+    $('#forces').on('click',function(){
+      if($('#normal').css('display')!='none'){
+        $('#codeforces').show().siblings('div').hide();
+      }
+    });
     </script>
     {% endblock %}
     <script src="assets/js/custom-scripts.js"></script>

@@ -1,5 +1,5 @@
 from django import forms
-from programming.models import Student_details, Groups
+from programming.models import Student_details, Groups, DailyChallenges
 from django.db.models.functions import datetime
 from django.utils.translation import ugettext_lazy as _
 
@@ -47,4 +47,21 @@ class GroupForm(forms.ModelForm):
         name = self.cleaned_data.get('groupname', None)
         if Groups.objects.filter(groupname=name):
             raise forms.ValidationError(_('That username is already in use, please use a new one!'))
+        return name
+
+class DailyChallengesForm(forms.ModelForm):
+    probname = forms.CharField(required = False)
+
+    class Meta:
+        model = DailyChallenges
+        fields = ('probname',)
+
+    def clean_name(self):
+        """
+        check username already exists
+        :return: cleaned username
+        """
+        name = self.cleaned_data.get('probname', None)
+        if Groups.objects.filter(probname=probname):
+            raise forms.ValidationError(_('Not saving'))
         return name
