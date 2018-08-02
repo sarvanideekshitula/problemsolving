@@ -31,8 +31,9 @@ def isopposite(a,b):
 
 def update(handle):
     url = "https://www.codechef.com/users/"+handle
-    r = requests.get(url)
+    r = requests.get(url, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36\(KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
     soup = BeautifulSoup(r.content, 'html.parser')
+    print soup
     script = soup.find_all('script')[36]
     startindex = script.text.find("all_rating")
     while (script.text[startindex] != '['):
@@ -81,18 +82,15 @@ class addGroup(CreateView):
     template_name = 'programming/creategroup.html'
     success_url = reverse_lazy('home')
 
-
-
     def get_context_data(self, *args, **kwargs):
         ctx = super(addGroup, self).get_context_data(*args, **kwargs)
         ctx['name'] = Student_details.objects.values_list('name', flat=True)
         return ctx
 
-
     def post(self, request, *args, **kwargs):
         students = request.POST.getlist('students[]')
         groupname = request.POST.get('groupname')
-        #print self.object
+
         for i in students:
             stu = Student_details.objects.get(name = i)
             stu.groupid.add(Groups.objects.get(groupname = groupname).id)
@@ -137,7 +135,7 @@ class detailGroup(ListView):
               for i in delstu:
                   stu = Student_details.objects.get(name = i)
                   stu.groupid.remove(g.id)
-          return HttpResponseRedirect('/programming/addStudent')
+          return HttpResponseRedirect('/programming/detailgroup/%s'%g.groupname)
 
 class studentsDetail(DetailView):
     model = Student_details
@@ -152,6 +150,6 @@ class studentsDetail(DetailView):
         context['user_info'].codechefrating = codechefdata[len(codechefdata)-1]['rating']
         context['user_info'].codeforcesrating = codeforcesdata['result'][len(codeforcesdata['result'])-1]['newRating']
         context['user_info'].save()
-        context['ranks'] = codechefdata
-        context['codeforcesrank'] = codeforcesdata['result']
+        context['ranks'] = reversed(codechefdata)
+        context['codeforcesrank'] = reversed(codeforcesdata['result'])
         return context

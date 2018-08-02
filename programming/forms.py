@@ -40,10 +40,6 @@ class GroupForm(forms.ModelForm):
         fields = ('groupname',)
 
     def clean_name(self):
-        """
-        check username already exists
-        :return: cleaned username
-        """
         name = self.cleaned_data.get('groupname', None)
         if Groups.objects.filter(groupname=name):
             raise forms.ValidationError(_('That username is already in use, please use a new one!'))
