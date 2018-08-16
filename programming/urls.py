@@ -1,13 +1,13 @@
 from django.conf.urls import url, include
 from programming import views
-from programming.views import viewsummary, detailGroup, studentsDetail, StudentView, addGroup, dailyChallenges, searchDailyChallenges
+from programming.views import viewsummary, detailGroup, studentsDetail, StudentView, dailyChallenges, searchDailyChallenges
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^addstudent/$', StudentView.as_view(), name='studentview'),
     url(r'^viewsummary/$', viewsummary.as_view(), name='viewsummary'),
-    url(r'^creategroup/$', addGroup.as_view(), name='addgroup'),
-    #url(r'^creategroup/$', views.addgroup, name='addgroup'),
+    #url(r'^creategroup/$', addGroup.as_view(), name='addgroup'),
+    url(r'^creategroup/$', views.addgroup, name='addgroup'),
     url(r'^viewgroups/$', views.viewgroups, name='viewgroups'),
     url(r'^deletestudents/$', views.deleteStudents, name='deleteStudents'),
     url(r'^detailgroup/(?P<slug>[\w-]+)/$', detailGroup.as_view(), name='detailgroup'),

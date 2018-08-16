@@ -41,25 +41,17 @@ class viewsummary(ListView):
         u.save()
         return HttpResponseRedirect('/programming/viewsummary')
 
-class addGroup(CreateView):
-    form_class = GroupForm
-    model = Groups
-    template_name = 'programming/creategroup.html'
-    success_url = reverse_lazy('home')
-
-    def get_context_data(self, *args, **kwargs):
-        ctx = super(addGroup, self).get_context_data(*args, **kwargs)
-        ctx['name'] = Student_details.objects.values_list('name', flat=True)
-        return ctx
-
-    def post(self, request):
-        super(GroupForm, self).save(commit)
+def addgroup(request):
+    if request.method == 'POST':
+        groupname = request.POST.get('name')
         students = request.POST.getlist('students[]')
-        groupname = request.POST.get('groupname')
-        #print self.object
+        u = Groups(groupname = groupname)
+        u.save()
         for i in students:
             stu = Student_details.objects.get(name = i)
-            stu.groupid.add(Groups.objects.get(groupname = groupname).id)
+            stu.groupid.add(u.id)
+        return HttpResponseRedirect('/programming/')
+    return render(request, 'programming/creategroup.html',{'name':Student_details.objects.values_list('name',flat=True)})
 
 
 def viewgroups(request):
@@ -103,7 +95,7 @@ class detailGroup(ListView):
               for i in delstu:
                   stu = Student_details.objects.get(name = i)
                   stu.groupid.remove(g.id)
-          return HttpResponseRedirect('/programming/addStudent')
+          return HttpResponseRedirect('/programming/')
 
 class studentsDetail(DetailView):
     model = Student_details
