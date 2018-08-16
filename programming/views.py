@@ -11,7 +11,7 @@ import os
 import json
 import requests
 from bs4 import BeautifulSoup
-from programming.programing import update, getUserRating, dailychallengeupdate
+from programming.programing import update, getUserRating, dailychallengeupdate, dailychallengedata
 from django.urls import reverse_lazy
 # Create your views here.
 
@@ -112,6 +112,19 @@ class studentsDetail(DetailView):
         context = super(studentsDetail, self).get_context_data(**kwargs)
         pk = self.kwargs['pk']
         context['user_info'] = Student_details.objects.get(id = pk)
+        data = dailychallengedata(context['user_info'].codeforces)
+        dailychallenges = DailyChallenges.objects.values_list('probname', flat=True)
+        challenges = {}
+        for i in dailychallenges:
+            for j in data['result']:
+                if(j['problem']['name'] == i):
+                    challenge = i
+                    challenges[challenge] = 'Yes'
+                    break
+                else:
+                    challenge = i
+                    challenges[challenge] = 'No'
+        context['solved'] = challenges
         codechefdata = json.loads(context['user_info'].codechefdetails)
         codeforcesdata = json.loads(context['user_info'].codeforcesdetails)
         context['user_info'].codechefrating = codechefdata[len(codechefdata)-1]['rating']
@@ -120,6 +133,7 @@ class studentsDetail(DetailView):
         context['ranks'] = reversed(codechefdata)
         context['codeforcesrank'] = reversed(codeforcesdata['result'])
         return context
+
 
 class dailyChallenges(CreateView):
     model = DailyChallenges

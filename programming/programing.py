@@ -64,3 +64,7 @@ def dailychallengeupdate(handle, problemName):
             if i['verdict'] == 'OK':
                 return True
     return False
+
+def dailychallengedata(handle):
+    data = requests.get("https://codeforces.com/api/user.status?handle="+handle)
+    return data.json()
