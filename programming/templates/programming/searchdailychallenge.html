@@ -34,11 +34,22 @@
                                 <!-- /.col-lg-6 (nested) -->
                                 <!-- /.col-lg-6 (nested) -->
                             </div>
-                            {% for key, value in names.items %}
-                              {{key}} : {{value}}<br>
-                            {% endfor %}
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                      {% for key, value in names.items %}
+                                      <tr class="odd gradeA">
+                                          <td>{{key}}</td>
+                                          <td>{{value}}</td>                                  
+                                      </tr>
+                                      {% endfor %}
+                                    </table>
+                                  </div>
+                                </div>
                             <!-- /.row (nested) -->
                         </div>
+
+
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
