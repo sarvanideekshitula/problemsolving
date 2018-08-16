@@ -15,6 +15,7 @@ from programming.programing import update, getUserRating, dailychallengeupdate
 from django.urls import reverse_lazy
 # Create your views here.
 
+
 def home(request):
     temp = 'programming/home.html'
     return render(request,temp,{})
@@ -47,15 +48,15 @@ class addGroup(CreateView):
     success_url = reverse_lazy('home')
 
     def get_context_data(self, *args, **kwargs):
-        print "FUCK2"
         ctx = super(addGroup, self).get_context_data(*args, **kwargs)
         ctx['name'] = Student_details.objects.values_list('name', flat=True)
         return ctx
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
+        super(GroupForm, self).save(commit)
         students = request.POST.getlist('students[]')
         groupname = request.POST.get('groupname')
-
+        #print self.object
         for i in students:
             stu = Student_details.objects.get(name = i)
             stu.groupid.add(Groups.objects.get(groupname = groupname).id)
@@ -102,7 +103,7 @@ class detailGroup(ListView):
               for i in delstu:
                   stu = Student_details.objects.get(name = i)
                   stu.groupid.remove(g.id)
-          return HttpResponseRedirect('/programming/detailgroup/%s'%g.groupname)
+          return HttpResponseRedirect('/programming/addStudent')
 
 class studentsDetail(DetailView):
     model = Student_details
@@ -117,8 +118,8 @@ class studentsDetail(DetailView):
         context['user_info'].codechefrating = codechefdata[len(codechefdata)-1]['rating']
         context['user_info'].codeforcesrating = codeforcesdata['result'][len(codeforcesdata['result'])-1]['newRating']
         context['user_info'].save()
-        context['ranks'] = reversed(codechefdata)
-        context['codeforcesrank'] = reversed(codeforcesdata['result'])
+        context['ranks'] = codechefdata
+        context['codeforcesrank'] = codeforcesdata['result']
         return context
 
 class dailyChallenges(CreateView):
