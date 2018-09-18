@@ -21,7 +21,7 @@ def isopposite(a,b):
 
 def update(handle):
     url = "https://www.codechef.com/users/"+handle
-    r = requests.get(url)
+    r = requests.get(url, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36\(KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'} )
     soup = BeautifulSoup(r.content, 'html.parser')
     script = soup.find_all('script')[36]
     startindex = script.text.find("all_rating")

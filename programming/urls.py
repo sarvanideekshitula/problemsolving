@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^creategroup/$', addGroup.as_view(), name='addgroup'),
     #url(r'^creategroup/$', views.addgroup, name='addgroup'),
     url(r'^viewgroups/$', views.viewgroups, name='viewgroups'),
+    url(r'^upload/$', views.upload, name='upload'),
     url(r'^deletestudents/$', views.deleteStudents, name='deleteStudents'),
     url(r'^detailgroup/(?P<slug>[\w-]+)/$', detailGroup.as_view(), name='detailgroup'),
     url(r'^profile/(?P<pk>\d+)/$', studentsDetail.as_view(), name='studentsDetail'),

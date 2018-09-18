@@ -10,6 +10,7 @@ import re
 import os
 import json
 import requests
+import csv
 from bs4 import BeautifulSoup
 from programming.programing import update, getUserRating, dailychallengeupdate, dailychallengedata
 from django.urls import reverse_lazy
@@ -103,7 +104,7 @@ class detailGroup(ListView):
               for i in delstu:
                   stu = Student_details.objects.get(name = i)
                   stu.groupid.remove(g.id)
-          return HttpResponseRedirect('/programming/addStudent')
+          return HttpResponseRedirect('/programming/addstudent')
 
 class studentsDetail(DetailView):
     model = Student_details
@@ -155,3 +156,14 @@ class searchDailyChallenges(CreateView):
             name = i.name
             names[name] = dailychallengeupdate(i.codeforces, proname)
         return render(request, self.template_name, {'names':names})
+
+def upload(request):
+    with open("programming/text.csv") as f:
+        reader = csv.reader(f)
+        print "fuck"
+        for row in reader:
+            print "fuck1"
+            print row[3]
+            print type(row[3])
+            created = Student_details.objects.get_or_create(name=row[0], codechef=row[1], codeforces=row[2], year=int(row[3]))
+    return HttpResponseRedirect('/programming/addstudent')

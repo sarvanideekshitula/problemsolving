@@ -109,11 +109,9 @@
                           <ul class="dropdown-menu">
                             {% for i in object_list %}
                               {% for j in i.groupid.all %}
-                                {% if j.groupname != slug %}
-                                {% ifchanged %}
+
                                   <li><input type="checkbox" class="small" data-value="option1" name="add[]" value="{{i.name}}"/>{{i.name}}</li>
-                                  {% endifchanged %}
-                                {% endif %}
+
                               {% endfor %}
                             {% endfor %}
                           </ul>
