@@ -60,7 +60,7 @@ def dailychallengeupdate(handle, problemName):
     data = requests.get("https://codeforces.com/api/user.status?handle="+handle)
     data = json.loads(data.text)
     for i in data['result']:
-        if i['problem']['name'] in problemName:
+        if problemName in i['problem']['name']:
             if i['verdict'] == 'OK':
                 return True
     return False

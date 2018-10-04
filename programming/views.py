@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from programming.models import Student_details, Groups, DailyChallenges
-from django.views.generic import ListView, DetailView, DeleteView, CreateView
+from django.views.generic import ListView, DetailView, DeleteView, CreateView, TemplateView
 from programming.forms import StudentForm, GroupForm, DailyChallengesForm
 import re
 import os
@@ -16,10 +16,8 @@ from programming.programing import update, getUserRating, dailychallengeupdate, 
 from django.urls import reverse_lazy
 # Create your views here.
 
-
-def home(request):
-    temp = 'programming/home.html'
-    return render(request,temp,{})
+class home(TemplateView):
+    template_name = 'programming/home.html'
 
 class StudentView(CreateView):
     model = Student_details
@@ -84,19 +82,20 @@ class detailGroup(ListView):
         return ctx
 
     def post(self, request, *args, **kwargs):
-          delstu = request.POST.getlist('delstu[]')
-          addstu = request.POST.getlist('add[]')
-          grp = request.POST.get('groupname')
-          g = Groups.objects.get(groupname = grp)
-          if len(delstu) == 0:
-              for i in addstu:
-                  stu = Student_details.objects.get(name = i)
-                  stu.groupid.add(g.id)
-          elif len(addstu) == 0:
-              for i in delstu:
-                  stu = Student_details.objects.get(name = i)
-                  stu.groupid.remove(g.id)
-          return HttpResponseRedirect('/programming/addstudent')
+        delstu = request.POST.getlist('delstu[]')
+        addstu = request.POST.getlist('add[]')
+        grp = request.POST.get('groupname')
+        g = Groups.objects.get(groupname = grp)
+        if len(delstu) == 0:
+            for i in addstu:
+                stu = Student_details.objects.get(name = i)
+                stu.groupid.add(g.id)
+        elif len(addstu) == 0:
+            for i in delstu:
+                stu = Student_details.objects.get(name = i)
+                stu.groupid.remove(g.id)
+        link = "/programming/detailgroup/" + grp
+        return HttpResponseRedirect(link)
 
 class studentsDetail(DetailView):
     model = Student_details

@@ -27,10 +27,10 @@ class StudentForm(forms.ModelForm):
         check username already exists
         :return: cleaned username
         """
-        username = self.cleaned_data.get('name', None)
-        if Student_details.objects.filter(name=username):
+        codechef = self.cleaned_data.get('codechef', None)
+        if Student_details.objects.filter(codechef=codechef):
             raise forms.ValidationError(_('That username is already in use, please use a new one!'))
-        return username
+        return codechef
 
 class GroupForm(forms.ModelForm):
     groupname = forms.CharField(required = False)

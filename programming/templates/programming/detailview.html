@@ -108,11 +108,7 @@
                           <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Select Students</button>
                           <ul class="dropdown-menu">
                             {% for i in object_list %}
-                              {% for j in i.groupid.all %}
-
                                   <li><input type="checkbox" class="small" data-value="option1" name="add[]" value="{{i.name}}"/>{{i.name}}</li>
-
-                              {% endfor %}
                             {% endfor %}
                           </ul>
                           <button type="submit" class="btn btn-default" name="button">Add Student</button>
@@ -128,11 +124,7 @@
                           <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Select Students</button>
                             <ul class="dropdown-menu">
                               {% for i in object_list %}
-                                {% for j in i.groupid.all %}
-                                  {% if j.groupname == slug %}
                                     <li><input type="checkbox" class="small" data-value="option1" name="delstu[]" value="{{i.name}}" tabIndex="-1">{{i.name}}</li>
-                                  {% endif %}
-                                {% endfor %}
                               {% endfor %}
                             </ul>
                           <button type="submit" class="btn btn-default" name="button">Delete Student</button>
