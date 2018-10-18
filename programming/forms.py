@@ -22,7 +22,7 @@ class StudentForm(forms.ModelForm):
         return year
 
 
-    def clean_name(self):
+    def clean_codechef(self):
         """
         check username already exists
         :return: cleaned username
