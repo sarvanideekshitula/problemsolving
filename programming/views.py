@@ -14,10 +14,20 @@ import csv
 from bs4 import BeautifulSoup
 from programming.programing import update, getUserRating, dailychallengeupdate, dailychallengedata
 from django.urls import reverse_lazy
+from django.db.models import Avg
 # Create your views here.
 
 class home(TemplateView):
     template_name = 'programming/home.html'
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(home, self).get_context_data(*args, **kwargs)
+        ctx['averagecodechef'] = Student_details.objects.all().aggregate(Avg('codechefrating'))
+        ctx['averagecodechef'] = round(ctx['averagecodechef']['codechefrating__avg'],2)
+        ctx['averagecodeforces'] = Student_details.objects.all().aggregate(Avg('codeforcesrating'))
+        ctx['averagecodeforces'] = round(ctx['averagecodeforces']['codeforcesrating__avg'],2)
+        ctx['averagedailyproblemssolved'] = DailyChallenges.objects.all().aggregate(Avg('count'))
+        ctx['averagedailyproblemssolved'] = round(ctx['averagedailyproblemssolved']['count__avg'],2)
+        return ctx
 
 class StudentView(CreateView):
     model = Student_details
@@ -134,18 +144,25 @@ class dailyChallenges(CreateView):
     template_name = 'programming/dailychallenges.html'
     success_url = reverse_lazy('searchDailyChallenges')
 
-class searchDailyChallenges(CreateView):
+class searchDailyChallenges(ListView):
     form_class = DailyChallengesForm
     model = DailyChallenges
     template_name = 'programming/searchdailychallenge.html'
 
     def post(self, request, *args, **kwargs):
         proname = request.POST.get('proname')
+        proname1 = DailyChallenges.objects.get(probname = proname)
         allstu = Student_details.objects.all()
         names = {}
+        cnt = 0
         for i in allstu:
             name = i.name
-            names[name] = dailychallengeupdate(i.codeforces, proname)
+            value = dailychallengeupdate(i.codeforces, proname)
+            names[name] = value
+            if(value):
+                cnt = cnt + 1
+        proname1.count = cnt
+        proname1.save()
         return render(request, self.template_name, {'names':names})
 
 def upload(request):
